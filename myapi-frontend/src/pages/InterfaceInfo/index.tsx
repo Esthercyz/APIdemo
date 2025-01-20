@@ -1,4 +1,4 @@
-import { addRule, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
+import { addRule, removeRule, updateRule } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -11,7 +11,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
@@ -216,14 +216,21 @@ const TableList: React.FC = () => {
         ]}
         // request={rule}
         request={async (params, sort: Record<string, SortOrder>, filter: Record<string, React.ReactText[] | null>) => {
-          const res = await listInterfaceInfoByPageUsingGet({
+          const res : any = await listInterfaceInfoByPageUsingGet({
             ...params
           })
           if (res?.data) {
             return {
               data: res?.data.records || [],
               success: true,
-              total: res.total,
+              total: res?.data.total || 0,
+            }
+          }
+          else{
+            return{
+              data:[],
+              success:false,
+              total: 0
             }
           }
         }}
