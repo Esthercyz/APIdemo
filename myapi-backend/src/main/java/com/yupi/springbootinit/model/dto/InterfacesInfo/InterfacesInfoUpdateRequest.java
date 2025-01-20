@@ -1,5 +1,8 @@
-package com.yupi.springbootinit.model.dto.interfaceInfo;
+package com.yupi.springbootinit.model.dto.InterfacesInfo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
@@ -14,10 +17,12 @@ import java.util.List;
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @Data
-public class InterfaceInfoUpdateRequest implements Serializable {
+public class InterfacesInfoUpdateRequest implements Serializable {
+
     /**
      * 主键
      */
+//    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -55,13 +60,11 @@ public class InterfaceInfoUpdateRequest implements Serializable {
      */
     private String method;
 
-
-
     /**
-     * 是否删除(0-未删, 1-已删)
+     * 创建人
      */
-    @TableLogic
-    private Integer isDelete;
+   // private Long userId;
 
-    private static final long serialVersionUID = 1L;
+    @TableField(exist = false)
+    private  static final long serialVersionUID=1L;
 }

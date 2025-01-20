@@ -1,5 +1,4 @@
 import { Footer } from '@/components';
-import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
   AlipayCircleOutlined,
@@ -21,6 +20,7 @@ import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { createStyles } from 'antd-style';
+import {userLoginUsingPost} from "@/services/myapi-backend/userController";
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -114,29 +114,39 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
+      const res = await userLoginUsingPost({ ...values});
+      if (res.data) {
+        // 创建一个新的 URL 对象，并获取当前 window.location.href 的查询参数
         const urlParams = new URL(window.location.href).searchParams;
+        // 将用户重定向到 'redirect' 参数指定的 URL，如果 'redirect' 参数不存在，则重定向到首页 ('/')
         history.push(urlParams.get('redirect') || '/');
+        // 用登录用户的数据更新初始状态
+        // setInitialState({
+        //   loginUser: res.data
+        // });
+        // const defaultLoginSuccessMessage = intl.formatMessage({
+        //   id: 'pages.login.success',
+        //   defaultMessage: '登录成功！',
+        // });
+        // message.success(defaultLoginSuccessMessage);
+        // await fetchUserInfo();
+        // const urlParams = new URL(window.location.href).searchParams;
+        // history.push(urlParams.get('redirect') || '/');
+        setInitialState({loginUser: res.data});
         return;
       }
-      console.log(msg);
+      // console.log(msg);
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      // setUserLoginState(msg);
     } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
-      });
+      // const defaultLoginFailureMessage = intl.formatMessage({
+      //   id: 'pages.login.failure',
+      //   defaultMessage: '登录失败，请重试！',
+      // });
+      const defaultLoginFailureMessage = '登录失败，请重试！';
       console.log(error);
       message.error(defaultLoginFailureMessage);
     }
@@ -181,7 +191,7 @@ const Login: React.FC = () => {
             <ActionIcons key="icons" />,
           ]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as API.UserLoginRequest);
           }}
         >
           <Tabs
@@ -217,7 +227,7 @@ const Login: React.FC = () => {
           {type === 'account' && (
             <>
               <ProFormText
-                name="username"
+                name="userAccount"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined />,
@@ -239,7 +249,7 @@ const Login: React.FC = () => {
                 ]}
               />
               <ProFormText.Password
-                name="password"
+                name="userPassword"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined />,

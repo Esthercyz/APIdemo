@@ -1,6 +1,7 @@
-package com.yupi.springbootinit.model.dto.interfaceInfo;
+package com.yupi.springbootinit.model.dto.InterfacesInfo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
@@ -16,7 +17,9 @@ import java.util.List;
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @Data
-public class InterfaceInfoAddRequest implements Serializable {
+public class InterfacesInfoAddRequest implements Serializable {
+
+
     /**
      * 名称
      */
@@ -43,7 +46,36 @@ public class InterfaceInfoAddRequest implements Serializable {
     private String responseHeader;
 
     /**
+     * 接口状态（0-关闭，1-开启）
+     */
+    private Integer status;
+
+    /**
      * 请求类型
      */
     private String method;
+
+//    /**
+//     * 创建人
+//     */
+//    private Long userId;
+//
+//    /**
+//     * 创建时间
+//     */
+//    private Date createTime;
+//
+//    /**
+//     * 更新时间
+//     */
+//    private Date updateTime;
+//
+//    /**
+//     * 是否删除(0-未删, 1-已删)
+//     */
+//    @TableLogic
+//    private Integer isDelete;
+
+    @TableField(exist = false)
+    private  static final long serialVersionUID=1L;
 }

@@ -1,27 +1,22 @@
-package com.yupi.springbootinit.model.dto.interfaceInfo;
+package com.yupi.springbootinit.model.entity;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.yupi.springbootinit.common.PageRequest;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
- * 查询请求
- *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * 接口信息表
+ * @TableName interfaces_info
  */
-@EqualsAndHashCode(callSuper = true)
+@TableName(value ="interfaces_info")
 @Data
-public class InterfaceInfoQueryRequest extends PageRequest implements Serializable {
+public class InterfacesInfo implements Serializable {
     /**
      * 主键
      */
-
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -80,5 +75,6 @@ public class InterfaceInfoQueryRequest extends PageRequest implements Serializab
     @TableLogic
     private Integer isDelete;
 
-    private static final long serialVersionUID = 1L;
+    @TableField(exist = false)
+    private  static final long serialVersionUID=1L;
 }

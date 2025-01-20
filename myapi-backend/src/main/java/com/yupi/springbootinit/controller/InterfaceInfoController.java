@@ -12,12 +12,12 @@ import com.yupi.springbootinit.constant.CommonConstant;
 import com.yupi.springbootinit.constant.UserConstant;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.exception.ThrowUtils;
-import com.yupi.springbootinit.model.dto.interfaceInfo.InterfaceInfoAddRequest;
-import com.yupi.springbootinit.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
-import com.yupi.springbootinit.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
-import com.yupi.springbootinit.model.entity.InterfaceInfo;
+import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoAddRequest;
+import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoQueryRequest;
+import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoUpdateRequest;
+import com.yupi.springbootinit.model.entity.InterfacesInfo;
 import com.yupi.springbootinit.model.entity.User;
-import com.yupi.springbootinit.service.InterfaceInfoService;
+import com.yupi.springbootinit.service.InterfacesInfoService;
 import com.yupi.springbootinit.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +40,7 @@ import java.util.List;
 public class InterfaceInfoController {
 
     @Resource
-    private InterfaceInfoService interfaceInfoService;
+    private InterfacesInfoService interfaceInfoService;
 
     @Resource
     private UserService userService;
@@ -55,17 +55,17 @@ public class InterfaceInfoController {
      * @return
      */
     @PostMapping("/add")
-    public BaseResponse<Long> addInterfaceInfo(@RequestBody InterfaceInfoAddRequest interfaceInfoAddRequest, HttpServletRequest request) {
+    public BaseResponse<Long> addInterfaceInfo(@RequestBody InterfacesInfoAddRequest interfaceInfoAddRequest, HttpServletRequest request) {
         if (interfaceInfoAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        InterfacesInfo interfaceInfo = new InterfacesInfo();
         BeanUtils.copyProperties(interfaceInfoAddRequest, interfaceInfo);
 //        List<String> tags = interfaceInfoAddRequest.getTags();
 //        if (tags != null) {
 //            interfaceInfo.setTags(JSONUtil.toJsonStr(tags));
 //        }
-        interfaceInfoService.validInterfaceInfo(interfaceInfo, true);
+        interfaceInfoService.validInterfacesInfo(interfaceInfo, true);
         User loginUser = userService.getLoginUser(request);
         interfaceInfo.setUserId(loginUser.getId());
 //        interfaceInfo.setFavourNum(0);
@@ -91,7 +91,7 @@ public class InterfaceInfoController {
         User user = userService.getLoginUser(request);
         long id = deleteRequest.getId();
         // 判断是否存在
-        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        InterfacesInfo oldInterfaceInfo = interfaceInfoService.getById(id);
         ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
         // 仅本人或管理员可删除
         if (!oldInterfaceInfo.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
@@ -109,21 +109,21 @@ public class InterfaceInfoController {
      */
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> updateInterfaceInfo(@RequestBody InterfaceInfoUpdateRequest interfaceInfoUpdateRequest) {
+    public BaseResponse<Boolean> updateInterfaceInfo(@RequestBody InterfacesInfoUpdateRequest interfaceInfoUpdateRequest) {
         if (interfaceInfoUpdateRequest == null || interfaceInfoUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        InterfacesInfo interfaceInfo = new InterfacesInfo();
         BeanUtils.copyProperties(interfaceInfoUpdateRequest, interfaceInfo);
 //        List<String> tags = interfaceInfoUpdateRequest.getTags();
 //        if (tags != null) {
 //            interfaceInfo.setTags(JSONUtil.toJsonStr(tags));
 //        }
         // 参数校验
-        interfaceInfoService.validInterfaceInfo(interfaceInfo, false);
+        interfaceInfoService.validInterfacesInfo(interfaceInfo, false);
         long id = interfaceInfoUpdateRequest.getId();
         // 判断是否存在
-        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        InterfacesInfo oldInterfaceInfo = interfaceInfoService.getById(id);
         ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
         boolean result = interfaceInfoService.updateById(interfaceInfo);
         return ResultUtils.success(result);
@@ -163,11 +163,11 @@ public class InterfaceInfoController {
 //        return ResultUtils.success(interfaceInfoPage);
 //    }
     @GetMapping("/list/page")
-    public BaseResponse<Page<InterfaceInfo>> listInterfaceInfoByPage(InterfaceInfoQueryRequest interfaceInfoQueryRequest, HttpServletRequest request) {
+    public BaseResponse<Page<InterfacesInfo>> listInterfaceInfoByPage(InterfacesInfoQueryRequest interfaceInfoQueryRequest, HttpServletRequest request) {
         if (interfaceInfoQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        InterfaceInfo interfaceInfoQuery = new InterfaceInfo();
+        InterfacesInfo interfaceInfoQuery = new InterfacesInfo();
         BeanUtils.copyProperties(interfaceInfoQueryRequest, interfaceInfoQuery);
         long current = interfaceInfoQueryRequest.getCurrent();
         long size = interfaceInfoQueryRequest.getPageSize();
@@ -180,11 +180,11 @@ public class InterfaceInfoController {
         if (size > 50) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        QueryWrapper<InterfaceInfo> queryWrapper = new QueryWrapper<>(interfaceInfoQuery);
+        QueryWrapper<InterfacesInfo> queryWrapper = new QueryWrapper<>(interfaceInfoQuery);
         queryWrapper.like(StringUtils.isNotBlank(description), "description", description);
         queryWrapper.orderBy(StringUtils.isNotBlank(sortField),
                 sortOrder.equals(CommonConstant.SORT_ORDER_ASC), sortField);
-        Page<InterfaceInfo> interfaceInfoPage = interfaceInfoService.page(new Page<>(current, size), queryWrapper);
+        Page<InterfacesInfo> interfaceInfoPage = interfaceInfoService.page(new Page<>(current, size), queryWrapper);
         return ResultUtils.success(interfaceInfoPage);
     }
 

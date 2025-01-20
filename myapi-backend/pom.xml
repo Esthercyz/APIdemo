@@ -12,9 +12,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.yupi</groupId>
-    <artifactId>myapi-backend</artifactId>
+    <artifactId>MyOpenAPIsPlatform</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>myapi-backend</name>
+    <name>MyOpenAPIsPlatform</name>
     <properties>
         <java.version>1.8</java.version>
     </properties>

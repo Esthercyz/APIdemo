@@ -3,7 +3,7 @@
 # @from <a href="https://yupi.icu">编程导航知识星球</a>
 spring:
   application:
-    name: myapi-backend
+    name: MyOpenAPIsPlatform
   # 默认 dev 环境
   profiles:
     active: dev
@@ -14,14 +14,14 @@ spring:
   # session 配置
   session:
     # todo 取消注释开启分布式 session（须先配置 Redis）
-#    store-type: redis
+    # store-type: redis
     # 30 天过期
     timeout: 2592000
   # 数据库配置
   # todo 需替换配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/my_db
+    url: jdbc:mysql://localhost:3306/cyz_apis_platform
     username: root
     password: 12345678
   # Redis 配置
