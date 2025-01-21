@@ -216,10 +216,7 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.RuleListItem, API.PageParams>
-        headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
-          defaultMessage: 'Enquiry form',
-        })}
+        headerTitle={'查询表格'}
         actionRef={actionRef}
         rowKey="key"
         search={{
