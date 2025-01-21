@@ -12,7 +12,7 @@ import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import {
-  addInterfaceInfoUsingPost,
+  addInterfaceInfoUsingPost, deleteInterfaceInfoUsingPost,
   listInterfaceInfoByPageUsingGet, updateInterfaceInfoUsingPost
 } from "@/services/myapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/es/table/interface";
@@ -94,19 +94,21 @@ const TableList: React.FC = () => {
    *
    * @param selectedRows
    */
-  const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+  const handleRemove = async (record: API.InterfacesInfo) => {
     const hide = message.loading('正在删除');
-    if (!selectedRows) return true;
+    if (!record) return true;
     try {
-      await removeRule({
-        key: selectedRows.map((row) => row.key),
+      await deleteInterfaceInfoUsingPost({
+        id:record.id,
       });
       hide();
-      message.success('Deleted successfully and will refresh soon');
+      message.success('删除成功');
+      // 删除成功自动刷新表单
+      actionRef.current?.reload();
       return true;
-    } catch (error) {
+    } catch (error:any) {
       hide();
-      message.error('Delete failed, please try again');
+      message.error('删除失败，' + error.message);
       return false;
     }
   };
@@ -115,18 +117,20 @@ const TableList: React.FC = () => {
     {
       title: 'id',
       dataIndex: 'id',
-      valueType: 'index'
+      valueType: 'index',
     },
     {
       title: '接口名称',
       dataIndex: 'name',
       valueType: 'text',
-      formItemProps:{
-        rules:[{
-          required: true,
-          message: '必填',
-        }]
-      }
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '必填',
+          },
+        ],
+      },
     },
     {
       title: '描述',
@@ -194,6 +198,14 @@ const TableList: React.FC = () => {
         >
           修改
         </a>,
+        <a
+          key="config"
+          onClick={() => {
+            handleRemove(record);
+          }}
+        >
+          删除
+        </a>,
         // <a key="subscribeAlert" href="https://procomponents.ant.design/">
         //   订阅警报
         // </a>,
@@ -225,23 +237,26 @@ const TableList: React.FC = () => {
           </Button>,
         ]}
         // request={rule}
-        request={async (params, sort: Record<string, SortOrder>, filter: Record<string, React.ReactText[] | null>) => {
-          const res : any = await listInterfaceInfoByPageUsingGet({
-            ...params
-          })
+        request={async (
+          params,
+          sort: Record<string, SortOrder>,
+          filter: Record<string, React.ReactText[] | null>,
+        ) => {
+          const res: any = await listInterfaceInfoByPageUsingGet({
+            ...params,
+          });
           if (res?.data) {
             return {
               data: res?.data.records || [],
               success: true,
               total: res?.data.total || 0,
-            }
-          }
-          else{
-            return{
-              data:[],
-              success:false,
-              total: 0
-            }
+            };
+          } else {
+            return {
+              data: [],
+              success: false,
+              total: 0,
+            };
           }
         }}
         columns={columns}
@@ -371,9 +386,12 @@ const TableList: React.FC = () => {
       </Drawer>
       <CreateModal
         columns={columns}
-        onCancel={()=>{handleModalOpen(false)}}
-        onSubmit={(values)=>handleAdd(values)}
-        visible={createModalOpen} />
+        onCancel={() => {
+          handleModalOpen(false);
+        }}
+        onSubmit={(values) => handleAdd(values)}
+        visible={createModalOpen}
+      />
     </PageContainer>
   );
 };
