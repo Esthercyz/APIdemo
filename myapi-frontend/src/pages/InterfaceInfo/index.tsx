@@ -1,4 +1,4 @@
-import { addRule, removeRule, updateRule } from '@/services/ant-design-pro/api';
+import { removeRule } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -7,14 +7,13 @@ import {
   ProDescriptions,
   ProTable,
 } from '@ant-design/pro-components';
+import UpdateModal from "@/pages/InterfaceInfo/components/UpdateModal"
 import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
-import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
 import {
   addInterfaceInfoUsingPost,
-  listInterfaceInfoByPageUsingGet
+  listInterfaceInfoByPageUsingGet, updateInterfaceInfoUsingPost
 } from "@/services/myapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/es/table/interface";
 import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
@@ -34,8 +33,8 @@ const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.InterfacesInfo>();
+  const [selectedRowsState, setSelectedRows] = useState<API.InterfacesInfo[]>([]);
 
   /**
    * @en-US International configuration
@@ -56,7 +55,7 @@ const TableList: React.FC = () => {
       message.success('Added successfully');
       handleModalOpen(false);
       return true;
-    } catch (error) {
+    } catch (error:any) {
       hide();
       message.error('创建失败，' + error.message);
       return false;
@@ -69,21 +68,22 @@ const TableList: React.FC = () => {
    *
    * @param fields
    */
-  const handleUpdate = async (fields: FormValueType) => {
-    const hide = message.loading('Configuring');
+  const handleUpdate = async (fields: API.InterfacesInfo) => {
+    if(!currentRow){
+      return;
+    }
+    const hide = message.loading('修改中');
     try {
-      await updateRule({
-        name: fields.name,
-        desc: fields.desc,
-        key: fields.key,
+      await updateInterfaceInfoUsingPost({
+        id: currentRow.id,
+        ...fields,
       });
       hide();
-
-      message.success('Configuration is successful');
+      message.success('操作成功');
       return true;
-    } catch (error) {
+    } catch (error:any) {
       hide();
-      message.error('Configuration failed, please try again!');
+      message.error('操作失败：'+error.message);
       return false;
     }
   };
@@ -325,7 +325,8 @@ const TableList: React.FC = () => {
       {/*  />*/}
       {/*  <ProFormTextArea width="md" name="desc" />*/}
       {/*</ModalForm>*/}
-      <UpdateForm
+      <UpdateModal
+        columns={columns}
         onSubmit={async (value) => {
           const success = await handleUpdate(value);
           if (success) {
@@ -342,10 +343,9 @@ const TableList: React.FC = () => {
             setCurrentRow(undefined);
           }
         }}
-        updateModalOpen={updateModalOpen}
+        visible={updateModalOpen}
         values={currentRow || {}}
       />
-
       <Drawer
         width={600}
         open={showDetail}
