@@ -3,7 +3,6 @@ package com.cyz.myapiinterface.controller;
 
 import com.cyz.myapiclientsdk.model.User;
 import com.cyz.myapiclientsdk.utils.SignUtils;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Objects;
+
 
 /*
   名称API
