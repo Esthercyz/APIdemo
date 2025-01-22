@@ -1,9 +1,7 @@
-package com.cyz.myapiinterface.utils;
+package com.cyz.myapiclientsdk.utils;
 
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
-
-import java.util.Map;
 
 /*
 签名工具

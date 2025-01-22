@@ -1,4 +1,4 @@
-package com.cyz.myapiinterface.model;
+package com.cyz.myapiclientsdk.model;
 
 import lombok.Data;
 import lombok.Getter;

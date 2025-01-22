@@ -1,11 +1,13 @@
 package com.cyz.myapiinterface.controller;
 
-import com.cyz.myapiinterface.utils.SignUtils;
+
+import com.cyz.myapiclientsdk.model.User;
+import com.cyz.myapiclientsdk.utils.SignUtils;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
-import com.cyz.myapiinterface.model.User;
+
 
 import java.time.Duration;
 import java.time.Instant;
@@ -49,7 +51,7 @@ public class NameController{
             throw new RuntimeException("无权限-过期");
         }
         //todo 实际情况是从数据库中查出secretKey
-        String serverSign=SignUtils.getSign(body,"abcdefgh");
+        String serverSign= SignUtils.getSign(body,"abcdefgh");
         if(!sign.equals(serverSign)){
             throw new RuntimeException("无权限-签名不一致");
         }
