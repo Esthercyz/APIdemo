@@ -11,7 +11,7 @@ public class Main {
         myApiClient.getNameByGet("YuziChen");
         myApiClient.getNameByPost("YuziChen");
         User user=new User();
-        user.setName("瑞驰");
+        user.setName("rich");
         myApiClient.getUserNameByPost(user);
     }
 }
