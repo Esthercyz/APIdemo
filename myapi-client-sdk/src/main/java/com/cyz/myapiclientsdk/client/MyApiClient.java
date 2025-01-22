@@ -47,7 +47,7 @@ public class MyApiClient {
         System.out.println("POST 的请求结果为:" + result);
 
     }
-    public void getUserNameByPost( User user) {
+    public String getUserNameByPost( User user) {
         String json= JSONUtil.toJsonStr(user);
         HttpResponse httpResponse= HttpRequest.post("http://localhost:8123/api/name/user/").
                 addHeaders(getHeaderMap(json)).
@@ -58,5 +58,6 @@ public class MyApiClient {
 
         String result = httpResponse.body();
         System.out.println(result);
+        return status+":"+result;
     }
 }

@@ -1,2 +1,2 @@
 # spring boot starter
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com/cyz/myapiclientsdk/CyzApiClientConfig.java
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com/cyz/myapiclientsdk/CyzApiClientConfig
