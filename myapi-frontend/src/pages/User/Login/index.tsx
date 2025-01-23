@@ -122,7 +122,11 @@ const Login: React.FC = () => {
         // 创建一个新的 URL 对象，并获取当前 window.location.href 的查询参数
         const urlParams = new URL(window.location.href).searchParams;
         // 将用户重定向到 'redirect' 参数指定的 URL，如果 'redirect' 参数不存在，则重定向到首页 ('/')
-        history.push(urlParams.get('redirect') || '/');
+        // 设置一个延迟100毫秒的定时器
+        // 定时器触发后，导航到重定向URL，如果没有重定向URL，则导航到根路径
+        setTimeout(() => {
+          history.push(urlParams.get('redirect') || '/');
+        }, 100);
         // 用登录用户的数据更新初始状态
         // setInitialState({
         //   loginUser: res.data

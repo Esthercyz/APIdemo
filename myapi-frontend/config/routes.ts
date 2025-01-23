@@ -12,6 +12,12 @@
  */
 export default [
   {
+    path: '/',
+    name: '欢迎',
+    icon: 'smile',
+    component: './Index',
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
@@ -20,12 +26,9 @@ export default [
       },
     ],
   },
-  // {
-  //   path: '/welcome', name: 'welcome', icon: 'smile',component: './Welcome',
-  // },
   {
     path: '/admin',
-    name: 'admin',
+    name: '管理页面',
     icon: 'crown',
     access: 'canAdmin',
     routes: [
