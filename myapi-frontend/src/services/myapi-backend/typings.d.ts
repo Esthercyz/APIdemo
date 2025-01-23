@@ -107,6 +107,10 @@ declare namespace API {
     id?: number;
   };
 
+  type IdRequest = {
+    id?: number;
+  };
+
   type InterfacesInfo = {
     createTime?: string;
     description?: string;
