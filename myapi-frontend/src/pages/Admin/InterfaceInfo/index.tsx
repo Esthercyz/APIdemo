@@ -7,7 +7,7 @@ import {
   ProDescriptions,
   ProTable,
 } from '@ant-design/pro-components';
-import UpdateModal from "@/pages/InterfaceInfo/components/UpdateModal"
+import UpdateModal from "@/pages/Admin/InterfaceInfo/components/UpdateModal"
 import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
@@ -16,7 +16,7 @@ import {
   listInterfaceInfoByPageUsingGet, updateInterfaceInfoUsingPost
 } from "@/services/myapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/es/table/interface";
-import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
+import CreateModal from "@/pages/Admin/InterfaceInfo/components/CreateModal";
 
 const TableList: React.FC = () => {
   /**
@@ -198,14 +198,34 @@ const TableList: React.FC = () => {
         >
           修改
         </a>,
-        <a
+        record.status===0?<a
           key="config"
           onClick={() => {
             handleRemove(record);
           }}
         >
+          发布
+        </a> :null,
+        record.status===1?<Button
+          type="text"
+          key="config"
+          danger
+          onClick={() => {
+            handleRemove(record);
+          }}
+        >
+          下线
+        </Button>:null,
+        <Button
+          type="text"
+          key="config"
+          danger
+          onClick={() => {
+            handleRemove(record);
+          }}
+        >
           删除
-        </a>,
+        </Button>,
         // <a key="subscribeAlert" href="https://procomponents.ant.design/">
         //   订阅警报
         // </a>,

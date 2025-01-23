@@ -3,11 +3,9 @@ package com.yupi.springbootinit.controller;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cyz.myapiclientsdk.client.MyApiClient;
 import com.yupi.springbootinit.annotation.AuthCheck;
-import com.yupi.springbootinit.common.BaseResponse;
-import com.yupi.springbootinit.common.DeleteRequest;
-import com.yupi.springbootinit.common.ErrorCode;
-import com.yupi.springbootinit.common.ResultUtils;
+import com.yupi.springbootinit.common.*;
 import com.yupi.springbootinit.constant.CommonConstant;
 import com.yupi.springbootinit.constant.UserConstant;
 import com.yupi.springbootinit.exception.BusinessException;
@@ -17,19 +15,23 @@ import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoQueryReque
 import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoUpdateRequest;
 import com.yupi.springbootinit.model.entity.InterfacesInfo;
 import com.yupi.springbootinit.model.entity.User;
+
+import com.yupi.springbootinit.model.enums.InterfaceInfoStatusEnum;
 import com.yupi.springbootinit.service.InterfacesInfoService;
 import com.yupi.springbootinit.service.UserService;
+import com.yupi.springbootinit.service.impl.InterfacesInfoServiceImpl;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
- * 帖子接口
+ * 接口管理
  *
  * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
@@ -44,6 +46,11 @@ public class InterfaceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private MyApiClient myApiClient;
+    @Autowired
+    private InterfacesInfoServiceImpl interfacesInfoServiceImpl;
 
     // region 增删改查
 
@@ -129,6 +136,68 @@ public class InterfaceInfoController {
         return ResultUtils.success(result);
     }
 
+    /**
+     * 发布（仅管理员）
+     *
+     * @param idRequest
+     * @param request
+     * @return request
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = "admin ")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest,HttpServletRequest request){
+        //获取id
+        if(idRequest==null || idRequest.getId()<=0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = idRequest.getId();
+        //判断是否存在
+        InterfacesInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if(oldInterfaceInfo==null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //判断该接口是否可以被调用
+        com.cyz.myapiclientsdk.model.User user = new com.cyz.myapiclientsdk.model.User();
+        user.setName("test");
+        String username=myApiClient.getUserNameByPost(user);
+        if(StringUtils.isBlank(username)){
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"接口验证失败");
+        }
+        //仅本人或管理员可修改
+        InterfacesInfo interfacesInfo=new InterfacesInfo();
+        interfacesInfo.setId(id);
+        interfacesInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result=interfaceInfoService.updateById(interfacesInfo);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 下线（仅管理员）
+     *
+     * @param idRequest
+     * @param request
+     * @return request
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = "admin ")
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest,HttpServletRequest request){
+        //获取id
+        if(idRequest==null || idRequest.getId()<=0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long id = idRequest.getId();
+        //判断是否存在
+        InterfacesInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if(oldInterfaceInfo==null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //仅本人或管理员可修改
+        InterfacesInfo interfacesInfo=new InterfacesInfo();
+        interfacesInfo.setId(id);
+        interfacesInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result=interfaceInfoService.updateById(interfacesInfo);
+        return ResultUtils.success(result);
+    }
     /**
      * 根据 id 获取
      *
