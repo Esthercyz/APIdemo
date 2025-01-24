@@ -20,7 +20,6 @@ import {
 } from "@/services/myapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/es/table/interface";
 import CreateModal from "@/pages/Admin/InterfaceInfo/components/CreateModal";
-import {record} from "@umijs/utils/compiled/zod";
 
 const TableList: React.FC = () => {
   /**

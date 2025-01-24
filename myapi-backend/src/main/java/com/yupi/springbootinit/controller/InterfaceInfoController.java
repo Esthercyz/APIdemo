@@ -17,6 +17,7 @@ import com.yupi.springbootinit.model.entity.InterfacesInfo;
 import com.yupi.springbootinit.model.entity.User;
 
 import com.yupi.springbootinit.model.enums.InterfaceInfoStatusEnum;
+import com.yupi.springbootinit.model.vo.InterfacesInfoVO;
 import com.yupi.springbootinit.service.InterfacesInfoService;
 import com.yupi.springbootinit.service.UserService;
 import com.yupi.springbootinit.service.impl.InterfacesInfoServiceImpl;
@@ -198,23 +199,26 @@ public class InterfaceInfoController {
         boolean result=interfaceInfoService.updateById(interfacesInfo);
         return ResultUtils.success(result);
     }
+
+
+
     /**
      * 根据 id 获取
      *
      * @param id
      * @return
      */
-//    @GetMapping("/get/vo")
-//    public BaseResponse<InterfaceInfoVO> getInterfaceInfoVOById(long id, HttpServletRequest request) {
-//        if (id <= 0) {
-//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-//        }
-//        InterfaceInfo interfaceInfo = interfaceInfoService.getById(id);
-//        if (interfaceInfo == null) {
-//            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
-//        }
-//        return ResultUtils.success(interfaceInfoService.getInterfaceInfoVO(interfaceInfo, request));
-//    }
+    @GetMapping("/get/vo")
+    public BaseResponse<InterfacesInfoVO> getInterfaceInfoVOById(long id, HttpServletRequest request) {
+        if (id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        InterfacesInfo interfaceInfo = interfaceInfoService.getById(id);
+        if (interfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        return ResultUtils.success(interfaceInfoService.convert2Vo(interfaceInfo));
+    }
 
     /**
      * 分页获取列表（仅管理员）
