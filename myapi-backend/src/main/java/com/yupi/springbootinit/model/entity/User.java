@@ -56,6 +56,16 @@ public class User implements Serializable {
     private String userAvatar;
 
     /**
+     * SDK Access Key
+     */
+    private String accessKey;
+
+    /**
+     * SDK Secret Key
+     */
+    private String secretKey;
+
+    /**
      * 用户简介
      */
     private String userProfile;
