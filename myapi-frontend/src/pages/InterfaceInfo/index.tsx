@@ -1,15 +1,17 @@
 import {PageContainer} from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Descriptions, Form, message} from 'antd';
+import { Button, Card, Descriptions, Form, message, Spin } from 'antd';
 import {
-  getInterfaceInfoVoByIdUsingGet,
+  getInterfaceInfoVoByIdUsingGet, invokeInterfaceInfoUsingPost,
 } from "@/services/myapi-backend/interfaceInfoController";
 import {useParams} from "@@/exports";
 import TextArea from "antd/es/input/TextArea";
 
 const Index: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [invokeLoading, setInvokedLoading] = useState(false);
   const [data,setData] = useState<API.InterfacesInfo>();
+  const [invokeRes,setInvokeRes] = useState<any>();
   const params=useParams();
 
   const loadData = async () => {
@@ -35,8 +37,24 @@ const Index: React.FC = () => {
     loadData();
   }, []);
 
-  const onFinish =(values:any)=>{
-    console.log('Success',values);
+  const onFinish =async (values:any)=>{
+    if(!params.id){
+      message.error('接口不存在');
+      return;
+    }
+    setInvokedLoading(true);
+    try{
+      const res = await invokeInterfaceInfoUsingPost({
+        id:params.id,
+        ...values
+      });
+      setInvokeRes(res.data);
+      message.success('请求成功');
+      return true;
+    }catch(error:any){
+      message.error('操作失败: '+error.message);
+    }
+    setInvokedLoading(false);
   };
 
   return (
@@ -61,8 +79,7 @@ const Index: React.FC = () => {
       </Card>
       <Card title="在线调用">
         <Form name="invoke" layout="vertical" onFinish={onFinish}>
-        </Form>
-        <Form.Item label="请求参数" name="requestParams">
+        <Form.Item label="请求参数" name="userRequestParams">
           <TextArea/>
         </Form.Item>
         <Form.Item wrapperCol={{span:16}}>
@@ -70,6 +87,10 @@ const Index: React.FC = () => {
             调用
           </Button>
         </Form.Item>
+        </Form>
+      </Card>
+      <Card title="返回的结果">
+        {invokeRes}
       </Card>
     </PageContainer>
   );

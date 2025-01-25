@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cyz.myapiclientsdk.client.MyApiClient;
+import com.google.gson.Gson;
 import com.yupi.springbootinit.annotation.AuthCheck;
 import com.yupi.springbootinit.common.*;
 import com.yupi.springbootinit.constant.CommonConstant;
@@ -11,6 +12,7 @@ import com.yupi.springbootinit.constant.UserConstant;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.exception.ThrowUtils;
 import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoAddRequest;
+import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoInvokeRequest;
 import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoQueryRequest;
 import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoUpdateRequest;
 import com.yupi.springbootinit.model.entity.InterfacesInfo;
@@ -200,8 +202,6 @@ public class InterfaceInfoController {
         return ResultUtils.success(result);
     }
 
-
-
     /**
      * 根据 id 获取
      *
@@ -221,11 +221,53 @@ public class InterfaceInfoController {
     }
 
     /**
-     * 分页获取列表（仅管理员）
+    *用户在线测试调用接口
+    * @param interfacesInfoInvokeRequest
+    * @param request
      *
-     * @param interfaceInfoQueryRequest
-     * @return
-     */
+     **/
+    @PostMapping("/invoke")
+    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfacesInfoInvokeRequest interfacesInfoInvokeRequest,
+                                              HttpServletRequest request){
+        //请求参数校验
+        if (interfacesInfoInvokeRequest == null || interfacesInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        long id = interfacesInfoInvokeRequest.getId();
+        String userRequestParams = interfacesInfoInvokeRequest.getUserRequestParams();
+
+        //判断接口是否存在
+        InterfacesInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if(oldInterfaceInfo==null){
+            log.error("请求接口 id:{} 不存在", id);
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if(oldInterfaceInfo.getStatus()==InterfaceInfoStatusEnum.OFFLINE.getValue()){
+            log.error("请求接口 id:{} 已经下线了", id);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"接口已关闭");
+        }
+        User loginUser =userService.getLoginUser(request);
+        String accessKey= loginUser.getAccessKey();
+        String secretKey=loginUser.getSecretKey();
+        if (StringUtils.isBlank(accessKey) || StringUtils.isBlank(secretKey)) {
+            log.error("用户 id:{} 非法请求接口调用", loginUser.getId());
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+        }
+        MyApiClient tempClient=new MyApiClient(accessKey,secretKey);
+        Gson gson=new Gson();
+        com.cyz.myapiclientsdk.model.User user = gson.fromJson(userRequestParams,com.cyz.myapiclientsdk.model.User.class);
+        String usernameByPost = tempClient.getUserNameByPost(user);
+//        System.out.println("分割线");
+        System.out.println("错误原因是"+usernameByPost);
+        return ResultUtils.success(usernameByPost);
+    }
+//    /**
+//     * 分页获取列表（仅管理员）
+//     *
+//     * @param interfaceInfoQueryRequest
+//     * @return
+//     */
 //    @PostMapping("/list/page")
 //    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
 //    public BaseResponse<Page<InterfaceInfo>> listInterfaceInfoByPage(@RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest) {
