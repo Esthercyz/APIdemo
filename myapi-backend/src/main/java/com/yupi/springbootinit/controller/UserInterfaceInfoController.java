@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/userInterfaceInfo")
 @Slf4j
 public class UserInterfaceInfoController {
@@ -127,8 +127,8 @@ public class UserInterfaceInfoController {
      */
     @GetMapping("/get")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<UserInterfaceInfo> getUserInterfaceInfoById(long id) {
-        if (id <= 0) {
+    public BaseResponse<UserInterfaceInfo> getUserInterfaceInfoById(@RequestParam Long id, HttpServletRequest request) {
+        if (id == null || id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         UserInterfaceInfo userInterfaceInfo = userInterfaceInfoService.getById(id);

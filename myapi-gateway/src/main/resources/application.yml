@@ -1,0 +1,19 @@
+server:
+  port: 8899
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/name/{api_url}
+#          filters:
+#            - AddRequestHeader=cyz,Esther
+#            - AddRequestParameter=name,YuziChen
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
