@@ -11,6 +11,16 @@ spring:
 #          filters:
 #            - AddRequestHeader=cyz,Esther
 #            - AddRequestParameter=name,YuziChen
+# Dubbo配置
+dubbo:
+  application:
+    name: dubbo-springboot-demo-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry
+    address: nacos://localhost:8848
 logging:
   level:
     org:

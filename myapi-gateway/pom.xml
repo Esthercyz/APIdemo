@@ -29,6 +29,7 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2023.0.5</spring-cloud.version>
+        <dubbo.version>3.2.10</dubbo.version>
     </properties>
     <dependencies>
         <dependency>
@@ -41,6 +42,29 @@
             <groupId>com.cyz</groupId>
             <artifactId>myapi-client-sdk</artifactId>
             <version>0.0.1</version>
+        </dependency>
+        <!--        Dubbo-->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>3.2.10</version>  <!-- or latest version -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-bom</artifactId>
+            <version>${dubbo.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
