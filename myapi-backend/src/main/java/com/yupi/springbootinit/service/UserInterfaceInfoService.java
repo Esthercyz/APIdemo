@@ -11,6 +11,8 @@ import com.cyz.myapicommon.model.entity.UserInterfaceInfo;
 */
 public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
     void validUserInterfaceInfo(UserInterfaceInfo userInterfaceInfo, boolean add);
-    //更新接口调用次数
+
     boolean invokeCount(long interfaceInfoId, long userId);
+
+    boolean canInvoke(Long InterfaceInfoId,Long userId);
 }

@@ -10,10 +10,7 @@ import org.springframework.beans.BeanUtils;
 * @description 针对表【interfaces_info(接口信息表)】的数据库操作Service
 * @createDate 2025-01-20 09:24:24
 */
-public interface InnerInterfacesInfoService extends IService<InterfacesInfo> {
-
-    void validInterfacesInfo(InterfacesInfo interfacesInfo, boolean add);
-
+public interface InnerInterfacesInfoService {
     /**
      * 从数据库中查询请求接口是否存在
      * @param path
@@ -22,9 +19,4 @@ public interface InnerInterfacesInfoService extends IService<InterfacesInfo> {
      */
     InterfacesInfo getInterfaceInfo(String path, String method);
 
-    default InterfacesInfoVO convert2Vo(InterfacesInfo interfacesInfo) {
-        InterfacesInfoVO vo = new InterfacesInfoVO();
-        BeanUtils.copyProperties(interfacesInfo,vo);
-        return vo;
-    }
 }

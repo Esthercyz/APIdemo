@@ -106,6 +106,7 @@ dubbo:
   protocol:
     name: dubbo
     port: -1
+    serialization: fastjson2
   registry:
     id: nacos-registry
     address: nacos://localhost:8848

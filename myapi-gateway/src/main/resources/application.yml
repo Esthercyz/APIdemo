@@ -15,6 +15,10 @@ spring:
 dubbo:
   application:
     name: dubbo-springboot-demo-provider
+    parameters:
+      qos.enable: false
+      qos.accept.foreign.ip: false
+      qos.port: 33333
   protocol:
     name: dubbo
     port: -1

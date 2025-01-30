@@ -1,5 +1,6 @@
 package com.yupi.springbootinit.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -7,9 +8,12 @@ import com.cyz.myapicommon.model.entity.UserInterfaceInfo;
 import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.mapper.UserInterfaceInfoMapper;
+import com.yupi.springbootinit.mapper.UserMapper;
 import com.yupi.springbootinit.service.UserInterfaceInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
 * @author esther
@@ -19,6 +23,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoMapper, UserInterfaceInfo>
     implements UserInterfaceInfoService {
+
+    @Resource
+    private UserInterfaceInfoMapper mapper;
+
     @Override
     public void validUserInterfaceInfo(UserInterfaceInfo userInterfaceInfo, boolean add) {
         if (userInterfaceInfo == null) {
@@ -72,6 +80,31 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
         updateWrapper.setSql("leftNum = leftNum - 1, totalNum = totalNum + 1");
         return this.update(updateWrapper);
     }
+
+    @Override
+    public boolean canInvoke(Long interfaceInfoId, Long userId) {
+        if (interfaceInfoId == null || userId == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        //基于接口id和请求用户id查询该接口剩余调用次数 > 0 是否存在
+        QueryWrapper<UserInterfaceInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("interfaceInfoId", interfaceInfoId);
+        queryWrapper.eq("userId", userId);
+        queryWrapper.gt("leftNum", 0);
+
+        UserInterfaceInfo userInterfaceInfo = null;
+        try {
+            userInterfaceInfo = mapper.selectOne(queryWrapper);
+            if (userInterfaceInfo == null) {
+                return false;
+            }
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
+        return true;
+    }
+
 }
 
 
