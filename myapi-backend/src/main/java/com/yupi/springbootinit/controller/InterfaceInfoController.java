@@ -1,9 +1,10 @@
 package com.yupi.springbootinit.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cyz.myapiclientsdk.client.MyApiClient;
+import com.cyz.myapicommon.model.entity.InterfacesInfo;
+import com.cyz.myapicommon.model.entity.User;
 import com.google.gson.Gson;
 import com.yupi.springbootinit.annotation.AuthCheck;
 import com.yupi.springbootinit.common.*;
@@ -15,15 +16,12 @@ import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoAddRequest
 import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoInvokeRequest;
 import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoQueryRequest;
 import com.yupi.springbootinit.model.dto.InterfacesInfo.InterfacesInfoUpdateRequest;
-import com.yupi.springbootinit.model.entity.InterfacesInfo;
-import com.yupi.springbootinit.model.entity.User;
 
 import com.yupi.springbootinit.model.enums.InterfaceInfoStatusEnum;
 import com.yupi.springbootinit.model.vo.InterfacesInfoVO;
 import com.yupi.springbootinit.service.InterfacesInfoService;
 import com.yupi.springbootinit.service.UserService;
 import com.yupi.springbootinit.service.impl.InterfacesInfoServiceImpl;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;

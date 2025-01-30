@@ -1,11 +1,10 @@
 package com.yupi.springbootinit.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cyz.myapicommon.model.entity.InterfacesInfo;
 import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.exception.BusinessException;
-import com.yupi.springbootinit.exception.ThrowUtils;
 import com.yupi.springbootinit.mapper.InterfacesInfoMapper;
-import com.yupi.springbootinit.model.entity.InterfacesInfo;
 import com.yupi.springbootinit.service.InterfacesInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

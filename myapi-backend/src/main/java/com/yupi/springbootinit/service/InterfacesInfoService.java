@@ -1,7 +1,7 @@
 package com.yupi.springbootinit.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yupi.springbootinit.model.entity.InterfacesInfo;
+import com.cyz.myapicommon.model.entity.InterfacesInfo;
 import com.yupi.springbootinit.model.vo.InterfacesInfoVO;
 import org.springframework.beans.BeanUtils;
 

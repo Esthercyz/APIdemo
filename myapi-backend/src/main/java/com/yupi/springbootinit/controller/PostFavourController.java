@@ -1,6 +1,7 @@
 package com.yupi.springbootinit.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cyz.myapicommon.model.entity.User;
 import com.yupi.springbootinit.common.BaseResponse;
 import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.common.ResultUtils;
@@ -10,7 +11,6 @@ import com.yupi.springbootinit.model.dto.post.PostQueryRequest;
 import com.yupi.springbootinit.model.dto.postfavour.PostFavourAddRequest;
 import com.yupi.springbootinit.model.dto.postfavour.PostFavourQueryRequest;
 import com.yupi.springbootinit.model.entity.Post;
-import com.yupi.springbootinit.model.entity.User;
 import com.yupi.springbootinit.model.vo.PostVO;
 import com.yupi.springbootinit.service.PostFavourService;
 import com.yupi.springbootinit.service.PostService;

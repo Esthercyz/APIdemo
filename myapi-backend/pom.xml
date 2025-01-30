@@ -30,6 +30,11 @@
             <artifactId>myapi-client-sdk</artifactId>
             <version>0.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.cyz</groupId>
+            <artifactId>myapi-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!--        Dubbo-->
         <dependency>
             <groupId>org.apache.dubbo</groupId>

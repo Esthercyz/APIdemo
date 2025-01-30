@@ -1,6 +1,6 @@
 package com.yupi.springbootinit.model.vo;
 
-import com.yupi.springbootinit.model.entity.InterfacesInfo;
+import com.cyz.myapicommon.model.entity.InterfacesInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
