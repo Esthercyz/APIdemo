@@ -110,6 +110,7 @@ dubbo:
   registry:
     id: nacos-registry
     address: nacos://localhost:8848
+#仅供测试，实际的ak和sk应从数据库中拿到
 cyzapi:
   client:
     access-key: cyz

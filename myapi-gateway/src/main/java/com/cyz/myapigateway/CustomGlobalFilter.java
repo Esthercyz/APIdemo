@@ -57,6 +57,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
     private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1");
 
+    //todo 在项目启动时获取数据库中所有的url,存储在内存中的hashmap中（redis）
     private static final String INTERFACE_HOST = "http://localhost:8123";
 
     /**
@@ -92,6 +93,12 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         String sign = headers.getFirst("sign");
         String body = headers.getFirst("body");
         User invokeUser = null;
+        //调用公共方法，根据accessKey从数据库中查找完整的用户信息
+        try{
+            invokeUser = innerUserService.getInvokeUser(accessKey);
+        }catch(Exception e){
+            log.error("getInvokeUser error",e);
+        }
         if(invokeUser==null){
             return handleNoAuth(response);
         }
@@ -102,13 +109,8 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (!isWithinThreeMinutes(timestamp)) {
             return handleNoAuth(response);
         }
-        //调用公共方法，根据accessKey从数据库中查找完整的用户信息
-        try{
-            invokeUser = innerUserService.getInvokeUser(accessKey);
-        }catch(Exception e){
-            log.error("getInvokeUser error",e);
-        }
         //从数据库中查出用户的secretKey
+        Long userID = invokeUser.getId();
         String secretKey=invokeUser.getSecretKey();
         String serverSign=SignUtils.getSign(body,secretKey);
         if(sign==null||!sign.equals(serverSign)){
