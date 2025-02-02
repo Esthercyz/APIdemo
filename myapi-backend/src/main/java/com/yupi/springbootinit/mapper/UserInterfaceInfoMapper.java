@@ -3,6 +3,8 @@ package com.yupi.springbootinit.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cyz.myapicommon.model.entity.UserInterfaceInfo;
 
+import java.util.List;
+
 
 /**
 * @author esther
@@ -11,7 +13,8 @@ import com.cyz.myapicommon.model.entity.UserInterfaceInfo;
 * @Entity generator.domain.UserInterfaceInfo
 */
 public interface UserInterfaceInfoMapper extends BaseMapper<UserInterfaceInfo> {
-
+    //查询前limit个调用次数最多的接口
+    List<UserInterfaceInfo> listTopInvokeInterfaceInfo(Integer limit);
 }
 
 

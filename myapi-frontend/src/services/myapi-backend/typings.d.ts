@@ -17,6 +17,18 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListInterfacesAnalysisVO_ = {
+    code?: number;
+    data?: InterfacesAnalysisVO[];
+    message?: string;
+  };
+
+  type BaseResponseListUserInterfaceInfo_ = {
+    code?: number;
+    data?: UserInterfaceInfo[];
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO_ = {
     code?: number;
     data?: LoginUserVO;
@@ -59,6 +71,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageUserInterfaceInfo_ = {
+    code?: number;
+    data?: PageUserInterfaceInfo_;
+    message?: string;
+  };
+
   type BaseResponsePageUserVO_ = {
     code?: number;
     data?: PageUserVO_;
@@ -83,21 +101,16 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseUserInterfaceInfo_ = {
+    code?: number;
+    data?: UserInterfaceInfo;
+    message?: string;
+  };
+
   type BaseResponseUserVO_ = {
     code?: number;
     data?: UserVO;
     message?: string;
-  };
-
-  type checkUsingGETParams = {
-    /** echostr */
-    echostr?: string;
-    /** nonce */
-    nonce?: string;
-    /** signature */
-    signature?: string;
-    /** timestamp */
-    timestamp?: string;
   };
 
   type DeleteRequest = {
@@ -119,6 +132,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getUserInterfaceInfoByIdUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
   type getUserVOByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -126,6 +144,27 @@ declare namespace API {
 
   type IdRequest = {
     id?: number;
+  };
+
+  type InterfaceAnalysisQueryRequest = {
+    limit?: number;
+  };
+
+  type InterfacesAnalysisVO = {
+    createTime?: string;
+    description?: string;
+    id?: number;
+    isDelete?: number;
+    method?: string;
+    name?: string;
+    requestHeader?: string;
+    requestParams?: string;
+    responseHeader?: string;
+    status?: number;
+    totalNum?: number;
+    updateTime?: string;
+    url?: string;
+    userId?: number;
   };
 
   type InterfacesInfo = {
@@ -206,6 +245,30 @@ declare namespace API {
     userId?: number;
   };
 
+  type listUserInterfaceInfoByPageUsingGETParams = {
+    current?: number;
+    interfaceInfoId?: number;
+    interfaceStatus?: number;
+    leftNum?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    totalNum?: number;
+    userId?: number;
+  };
+
+  type listUserInterfaceInfoUsingGETParams = {
+    current?: number;
+    interfaceInfoId?: number;
+    interfaceStatus?: number;
+    leftNum?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    totalNum?: number;
+    userId?: number;
+  };
+
   type LoginUserVO = {
     createTime?: string;
     id?: number;
@@ -268,6 +331,19 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: User[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageUserInterfaceInfo_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: UserInterfaceInfo[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -393,6 +469,32 @@ declare namespace API {
     userAvatar?: string;
     userName?: string;
     userRole?: string;
+  };
+
+  type UserInterfaceInfo = {
+    createTime?: string;
+    id?: number;
+    interfaceInfoId?: number;
+    interfaceStatus?: number;
+    isDelete?: number;
+    leftNum?: number;
+    totalNum?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type UserInterfaceInfoAddRequest = {
+    interfaceInfoId?: number;
+    leftNum?: number;
+    totalNum?: number;
+    userId?: number;
+  };
+
+  type UserInterfaceInfoUpdateRequest = {
+    id?: number;
+    interfaceStatus?: number;
+    leftNum?: number;
+    totalNum?: number;
   };
 
   type userLoginByWxOpenUsingGETParams = {

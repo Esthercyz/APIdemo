@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author esther
@@ -105,6 +106,12 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
         return true;
     }
 
+    @Override
+    public List<UserInterfaceInfo> listInterfacesAnalysis(Integer limit){
+        if(null==limit||limit<1)
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        return mapper.listTopInvokeInterfaceInfo(limit);
+    }
 }
 
 

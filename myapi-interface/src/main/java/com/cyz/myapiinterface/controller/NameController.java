@@ -1,13 +1,19 @@
 package com.cyz.myapiinterface.controller;
 
-
+import com.cyz.myapicommon.common.BaseResponse;
 import com.cyz.myapiclientsdk.model.User;
-import com.cyz.myapiclientsdk.utils.SignUtils;
+import com.cyz.myapicommon.common.exception.BusinessException;
+import com.cyz.myapicommon.common.exception.ErrorCode;
+import com.cyz.myapicommon.v1.param.IpAnaParam;
+import com.cyz.myapiinterface.IpUtil.IpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -20,6 +26,7 @@ import java.time.Instant;
 @RequestMapping("/name")
 @RestController
 public class NameController{
+    //内部测试接口
     @GetMapping("/get")
     public String getNameByGet(String name,HttpServletRequest request){
         System.out.println(request.getHeader("cyz"));
@@ -36,5 +43,7 @@ public class NameController{
 
         return "POST 用户名字是" + user.getName();
     }
+
+
 
 }

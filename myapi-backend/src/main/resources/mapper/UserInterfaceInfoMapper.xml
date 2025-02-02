@@ -21,4 +21,12 @@
         totalNum,leftNum,interfaceStatus,
         createTime,updateTime,isDelete
     </sql>
+    <select id="listTopInvokeInterfaceInfo" resultMap="BaseResultMap">
+        SELECT interfaceInfoId,
+               SUM(totalNum) as totalNum
+        FROM `user_interface_info`
+        GROUP BY interfaceInfoId
+        ORDER BY totalNum DESC
+            LIMIT #{limit};
+    </select>
 </mapper>

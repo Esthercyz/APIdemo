@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- @author <a href="https://github.com/liyupi">程序员鱼皮</a> -->
-<!-- @from <a href="https://yupi.icu">编程导航知识星球</a> -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -18,13 +16,14 @@
     <properties>
         <java.version>1.8</java.version>
         <dubbo.version>3.3.1</dubbo.version>
-        <spring-boot.version>3.2.3</spring-boot.version>
+<!--        <spring-boot.version>3.2.3</spring-boot.version>-->
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.cyz</groupId>
             <artifactId>myapi-client-sdk</artifactId>
@@ -142,6 +141,7 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

@@ -1,9 +1,8 @@
 package com.cyz.myapicommon.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
+
 import com.cyz.myapicommon.model.entity.InterfacesInfo;
 import com.cyz.myapicommon.model.vo.InterfacesInfoVO;
-import org.springframework.beans.BeanUtils;
 
 /**
 * @author esther

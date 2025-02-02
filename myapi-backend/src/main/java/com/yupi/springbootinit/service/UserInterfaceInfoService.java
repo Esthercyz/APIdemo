@@ -3,6 +3,8 @@ package com.yupi.springbootinit.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cyz.myapicommon.model.entity.UserInterfaceInfo;
 
+import java.util.List;
+
 
 /**
 * @author esther
@@ -15,4 +17,6 @@ public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
     boolean invokeCount(long interfaceInfoId, long userId);
 
     boolean canInvoke(Long InterfaceInfoId,Long userId);
+
+    List<UserInterfaceInfo> listInterfacesAnalysis(Integer limit);
 }

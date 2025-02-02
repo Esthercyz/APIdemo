@@ -1,6 +1,4 @@
 package com.cyz.myapicommon.service;
-
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.cyz.myapicommon.model.entity.UserInterfaceInfo;
 
 
