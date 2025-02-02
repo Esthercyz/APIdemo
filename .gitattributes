@@ -1,7 +1,7 @@
 *.md linguist-language=Java 
 *.yml linguist-language=Java 
-*.html linguist-language=java 
-*.js linguist-language=Java 
+*.html linguist-language=html
+*.js linguist-language=JavaScript 
 *.xml linguist-language=Java
 *.css linguist-language=Java 
 *.sql linguist-language=sql
